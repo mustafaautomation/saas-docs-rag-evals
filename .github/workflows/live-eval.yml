@@ -1,0 +1,33 @@
+name: Live eval
+
+on:
+  workflow_dispatch:
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - name: Check OPENAI_API_KEY
+        id: key
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "OPENAI_API_KEY secret is not set. Skipping live eval."
+            exit 0
+          fi
+          echo "present=true" >> "$GITHUB_OUTPUT"
+      - name: Install dependencies
+        if: steps.key.outputs.present == 'true'
+        run: uv sync --frozen --all-groups
+      - name: RAGAS live eval
+        if: steps.key.outputs.present == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: uv run northline-eval --mode live --no-write-report

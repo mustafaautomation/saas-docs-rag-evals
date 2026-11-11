@@ -1,0 +1,62 @@
+[project]
+name = "saas-docs-rag-evals"
+version = "0.1.0"
+description = "Synthetic Northline API docs assistant with a RAGAS evaluation gate."
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "Muhammad Mustafa" }]
+license = { text = "MIT" }
+dependencies = [
+    "faiss-cpu>=1.9.0",
+    # ragas 0.4.3 imports langchain_community.chat_models.vertexai, removed in 0.4.x.
+    "langchain-community>=0.3.31,<0.4",
+    "numpy>=2.0",
+    "openai>=1.55",
+    "pgvector>=0.3.6",
+    "pillow>=11.0",
+    "psycopg[binary]>=3.2",
+    "pyyaml>=6.0",
+    "ragas==0.4.3",
+    "rapidfuzz>=3.14.6",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "pytest>=8.3",
+    "ruff>=0.8",
+]
+
+[project.scripts]
+northline-ask = "northline_docs.ask:main"
+northline-eval = "northline_docs.eval.cli:main"
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["northline_docs"]
+warn_unused_ignores = true
+mypy_path = "src"
+
+[[tool.mypy.overrides]]
+module = ["faiss", "yaml", "ragas", "ragas.*", "pgvector", "pgvector.*", "openai", "openai.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-q", "--tb=short"]

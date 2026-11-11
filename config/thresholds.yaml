@@ -1,0 +1,18 @@
+# The offline gate fails the process when any score is below its threshold.
+# Guardrail metrics are 1.0 because one invented endpoint or one missed refusal fails the build.
+# Retrieval thresholds sit under the improved pipeline and over the naive pipeline.
+offline:
+  non_llm_context_recall: 0.80
+  string_presence: 0.80
+  refusal_correctness: 1.0
+  retrieval_hit_rate: 0.80
+  mrr: 0.70
+  endpoint_validity: 1.0
+  version_correctness: 0.90
+
+# Applied only by `northline-eval --mode live`.
+live:
+  faithfulness: 0.70
+  answer_relevancy: 0.70
+  context_precision: 0.70
+  context_recall: 0.70
