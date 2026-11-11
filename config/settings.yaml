@@ -1,0 +1,11 @@
+top_k: 5
+overlap_threshold: 0.4
+embedding_dim: 384
+openai_model: gpt-4o-mini
+openai_embedding_model: text-embedding-3-small
+# The naive variant always returns these documents, in this order, and ignores the question.
+naive_doc_ids:
+  - pagination
+  - idempotency
+  - errors
+  - overview

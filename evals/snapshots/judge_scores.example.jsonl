@@ -1,0 +1,1 @@
+{"label": "illustrative_example_not_a_measurement", "metrics": ["faithfulness", "answer_relevancy", "context_precision", "context_recall"], "note": "No OPENAI_API_KEY was available when this repository was built. This file documents the live-judge schema only. It contains no scores. Do not cite it as an evaluation result.", "ragas_version": "0.4.3", "scores": null}
